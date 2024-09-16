@@ -1,0 +1,62 @@
+services:
+    noted-gateway-service:
+        image: noted-gateway-service-image
+        container_name: noted-gateway-service
+        build:
+            context: ./noted-gateway-service
+        ports:
+            - "8080:8080"
+        networks:
+            - back-end
+    noted-account-service:
+        image: noted-account-service-image
+        container_name: noted-account-service
+        build:
+            context: ./noted-account-service
+        depends_on:
+            - noted-account-db
+        ports:
+            - "8081:8081"
+        networks:
+            - back-end
+    noted-notes-service:
+        image: noted-notes-service-image
+        container_name: noted-notes-service
+        build:
+            context: ./noted-notes-service
+        depends_on:
+            - noted-notes-db
+        ports:
+            - "8082:8082"
+        networks:
+            - back-end
+    noted-account-db:
+        image: postgres
+        container_name: noted-account-db
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: password1234
+            POSTGRES_DB: noted_account_db
+        ports:
+            - "5433:5432"
+        networks:
+            - back-end
+        volumes:
+            - /var/lib/postgresql/noted/v1/account:/var/lib/postgresql/data
+    noted-notes-db:
+        image: postgres
+        container_name: noted-notes-db
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: password1234
+            POSTGRES_DB: noted_notes_db
+        ports:
+            - "5434:5432"
+        networks:
+            - back-end
+        volumes:
+            - /var/lib/postgresql/noted/v1/notes:/var/lib/postgresql/data
+            
+networks:
+    back-end:
+        driver: bridge
