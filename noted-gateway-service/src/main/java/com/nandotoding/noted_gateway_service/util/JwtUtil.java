@@ -1,6 +1,6 @@
 package com.nandotoding.noted_gateway_service.util;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
