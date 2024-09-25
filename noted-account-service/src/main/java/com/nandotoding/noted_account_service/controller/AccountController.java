@@ -1,5 +1,6 @@
 package com.nandotoding.noted_account_service.controller;
 
+import com.nandotoding.noted_account_service.model.request.AccountRequest;
 import com.nandotoding.noted_account_service.model.request.LoginRequest;
 import com.nandotoding.noted_account_service.model.request.LogoutRequest;
 import com.nandotoding.noted_account_service.model.request.RegistrationRequest;
@@ -51,5 +52,11 @@ public class AccountController {
         successResponse.setStatus(HttpStatus.OK.name());
         successResponse.setData(logoutResponse);
         return ResponseEntity.status(HttpStatus.OK).body(successResponse);
+    }
+
+    @PostMapping("/account/info")
+    ResponseEntity info(@RequestBody AccountRequest accountRequest) {
+        AccountInfoResponse accountInfoResponse = accountService.getAccountInfo(accountRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(accountInfoResponse);
     }
 }

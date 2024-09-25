@@ -7,10 +7,7 @@ import com.nandotoding.noted_account_service.model.request.AccountRequest;
 import com.nandotoding.noted_account_service.model.request.LoginRequest;
 import com.nandotoding.noted_account_service.model.request.LogoutRequest;
 import com.nandotoding.noted_account_service.model.request.RegistrationRequest;
-import com.nandotoding.noted_account_service.model.response.AccountResponse;
-import com.nandotoding.noted_account_service.model.response.LoginServiceResponse;
-import com.nandotoding.noted_account_service.model.response.LogoutResponse;
-import com.nandotoding.noted_account_service.model.response.RegistrationResponse;
+import com.nandotoding.noted_account_service.model.response.*;
 import com.nandotoding.noted_account_service.repository.AccountRepository;
 import com.nandotoding.noted_account_service.service.AccountService;
 import com.nandotoding.noted_account_service.util.JwtUtil;
@@ -89,5 +86,20 @@ public class AccountServiceImplementation implements AccountService {
         accountResponse.setUsername(account.getUsername());
         accountResponse.setActive(account.isActive());
         return accountResponse;
+    }
+
+    @Override
+    public AccountInfoResponse getAccountInfo(AccountRequest accountRequest) {
+        Account account = accountRepository.getAccount(accountRequest.getId());
+
+        if (account == null) {
+            throw new NotFoundException();
+        }
+
+        AccountInfoResponse accountInfoResponse = new AccountInfoResponse();
+        accountInfoResponse.setId(account.getId());
+        accountInfoResponse.setActive(account.isActive());
+        accountInfoResponse.setDeleted(account.isDeleted());
+        return accountInfoResponse;
     }
 }

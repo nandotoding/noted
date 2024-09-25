@@ -28,7 +28,9 @@
 	</scm>
 	<packaging>pom</packaging>
 	<modules>
+		<module>noted-gateway-service</module>
 		<module>noted-account-service</module>
+		<module>noted-notes-service</module>
 	</modules>
 	<properties>
 		<java.version>17</java.version>

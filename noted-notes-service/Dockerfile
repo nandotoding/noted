@@ -6,6 +6,7 @@ ENV NOT_SERV_DB_USERNAME=postgres
 ENV NOT_SERV_DB_PASSWORD=password1234
 ENV NOT_SERV_DB_DRIVERCLASSNAME=org.postgresql.Driver
 ENV NOT_SERV_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+ENV ACC_SERV_URL=http://noted-account-service:8081
 
 WORKDIR /app/noted
 

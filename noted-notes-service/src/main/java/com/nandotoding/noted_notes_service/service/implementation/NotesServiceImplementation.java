@@ -1,15 +1,14 @@
 package com.nandotoding.noted_notes_service.service.implementation;
 
 import com.nandotoding.noted_notes_service.exception.NotFoundException;
+import com.nandotoding.noted_notes_service.exception.UnauthorizedException;
 import com.nandotoding.noted_notes_service.model.entity.Notes;
-import com.nandotoding.noted_notes_service.model.request.EditRequest;
-import com.nandotoding.noted_notes_service.model.request.GetAllRequest;
-import com.nandotoding.noted_notes_service.model.request.ReadRequest;
-import com.nandotoding.noted_notes_service.model.request.WriteRequest;
+import com.nandotoding.noted_notes_service.model.request.*;
 import com.nandotoding.noted_notes_service.model.response.ReadResponse;
 import com.nandotoding.noted_notes_service.model.response.WriteResponse;
 import com.nandotoding.noted_notes_service.repository.NotesRepository;
 import com.nandotoding.noted_notes_service.service.NotesService;
+import com.nandotoding.noted_notes_service.util.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +21,22 @@ import java.util.UUID;
 @Service
 public class NotesServiceImplementation implements NotesService {
     private final NotesRepository notesRepository;
+    private final AuthUtil authUtil;
 
     @Autowired
-    public NotesServiceImplementation(NotesRepository notesRepository) {
+    public NotesServiceImplementation(NotesRepository notesRepository, AuthUtil authUtil) {
         this.notesRepository = notesRepository;
+        this.authUtil = authUtil;
     }
 
     @Override
     public List<ReadResponse> getAll(GetAllRequest getAllRequest) {
+        AccountInfoRequest accountInfoRequest = new AccountInfoRequest(getAllRequest.getAccountId());
+
+        if (!authUtil.isActiveSession(accountInfoRequest)) {
+            throw new UnauthorizedException("Out of Session");
+        }
+
         List<Notes> notesList = notesRepository.getAllNotes(getAllRequest.getAccountId());
         List<ReadResponse> readResponseList = new ArrayList<>();
 
@@ -42,6 +49,12 @@ public class NotesServiceImplementation implements NotesService {
 
     @Override
     public WriteResponse write(WriteRequest writeRequest) {
+        AccountInfoRequest accountInfoRequest = new AccountInfoRequest(writeRequest.getAccountId());
+
+        if (!authUtil.isActiveSession(accountInfoRequest)) {
+            throw new UnauthorizedException("Out of Session");
+        }
+
         Notes notes = new Notes();
         notes.setId(UUID.randomUUID().toString());
         notes.setAccountId(writeRequest.getAccountId());
@@ -55,6 +68,12 @@ public class NotesServiceImplementation implements NotesService {
 
     @Override
     public ReadResponse read(ReadRequest readRequest) {
+        AccountInfoRequest accountInfoRequest = new AccountInfoRequest(readRequest.getAccountId());
+
+        if (!authUtil.isActiveSession(accountInfoRequest)) {
+            throw new UnauthorizedException("Out of Session");
+        }
+
         Notes notes = notesRepository.getNote(readRequest.getId(), readRequest.getAccountId());
 
         if (notes == null) {
@@ -71,6 +90,12 @@ public class NotesServiceImplementation implements NotesService {
 
     @Override
     public WriteResponse edit(EditRequest editRequest) {
+        AccountInfoRequest accountInfoRequest = new AccountInfoRequest(editRequest.getAccountId());
+
+        if (!authUtil.isActiveSession(accountInfoRequest)) {
+            throw new UnauthorizedException("Out of Session");
+        }
+
         Notes notes = notesRepository.getNote(editRequest.getId(), editRequest.getAccountId());
 
         if (notes == null) {
@@ -83,6 +108,12 @@ public class NotesServiceImplementation implements NotesService {
 
     @Override
     public WriteResponse delete(ReadRequest readRequest) {
+        AccountInfoRequest accountInfoRequest = new AccountInfoRequest(readRequest.getAccountId());
+
+        if (!authUtil.isActiveSession(accountInfoRequest)) {
+            throw new UnauthorizedException("Out of Session");
+        }
+
         Notes notes = notesRepository.getNote(readRequest.getId(), readRequest.getAccountId());
 
         if (notes == null) {
