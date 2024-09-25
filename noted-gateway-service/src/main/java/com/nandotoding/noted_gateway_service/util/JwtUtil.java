@@ -1,5 +1,6 @@
 package com.nandotoding.noted_gateway_service.util;
 
+import com.nandotoding.noted_gateway_service.exception.UnauthorizedException;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -11,14 +12,14 @@ public class JwtUtil {
 
     public boolean validateToken(String token) {
         if (token == null) {
-            throw new RuntimeException("Token is null");
+            throw new UnauthorizedException("Token is null");
         }
 
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
         } catch (RuntimeException e) {
-            throw new RuntimeException("Invalid JWT");
+            throw new UnauthorizedException("Invalid JWT");
         }
     }
 

@@ -1,5 +1,6 @@
 package com.nandotoding.noted_gateway_service.filter;
 
+import com.nandotoding.noted_gateway_service.exception.UnauthorizedException;
 import com.nandotoding.noted_gateway_service.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -22,7 +23,7 @@ public class RequestValidationFilter implements GatewayFilter {
         String authorizationHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
 
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            return Mono.error(new RuntimeException("Invalid Request Header"));
+            return Mono.error(new UnauthorizedException("Invalid Request Header"));
         }
 
         String token = authorizationHeader.replace("Bearer ", "");
@@ -30,7 +31,7 @@ public class RequestValidationFilter implements GatewayFilter {
         try {
             jwtUtil.validateToken(token);
         } catch (RuntimeException e) {
-            return Mono.error(new RuntimeException("Invalid JWT"));
+            return Mono.error(new UnauthorizedException("Invalid JWT"));
         }
 
         return chain.filter(exchange);
