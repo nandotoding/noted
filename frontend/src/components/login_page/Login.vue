@@ -50,6 +50,7 @@ export default {
                 const loginResponse = await axios.post("http://192.168.5.7:8080/account/login", data);
 
                 if (loginResponse.status == 200) {
+                    console.log(loginResponse.headers);
                     const token = loginResponse.headers["authorization"].replace("Bearer ", "");
                     const accountId = loginResponse.data.data.id;
                     localStorage.setItem("notedToken", token);
