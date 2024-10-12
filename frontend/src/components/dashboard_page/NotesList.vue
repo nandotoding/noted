@@ -5,7 +5,7 @@
             <tbody>
                 <tr v-for="note in notesData" :key="note.id" class="align-middle">
                     <td class="border-0">
-                        <button type="button" class="btn btn-secondary btn-sm" @click="options">options</button>
+                        <button type="button" class="btn btn-secondary btn-sm" @click="view">view</button>
                     </td>
                     <td class="border-0">{{ note.title }}</td>
                     <td class="border-0">{{ note.note }}</td>
@@ -24,23 +24,10 @@
 import axios from 'axios';
 
 export default {
-    data() {
-        return {
-            notesData: []
-        };
-    },
-    async created() {
-        await this.fetchNotes();
-    },
-    methods: {
-        async fetchNotes() {
-            let data = {accountId: localStorage.getItem("notedAccountId")};
-            try {
-                const response = await axios.post("http://192.168.5.7:8080/notes/all", data);
-                this.notesData = response.data.data;
-            } catch(e) {
-                console.error("Failed fetching notes/all. ", e);
-            }
+    props: {
+        notesData: {
+            type: Array,
+            required: true,
         }
     }
 }

@@ -98,6 +98,8 @@ public class AccountServiceImplementation implements AccountService {
 
         AccountInfoResponse accountInfoResponse = new AccountInfoResponse();
         accountInfoResponse.setId(account.getId());
+        accountInfoResponse.setName(account.getName());
+        accountInfoResponse.setUsername(account.getUsername());
         accountInfoResponse.setActive(account.isActive());
         accountInfoResponse.setDeleted(account.isDeleted());
         return accountInfoResponse;

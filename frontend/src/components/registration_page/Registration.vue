@@ -1,6 +1,6 @@
 <style scoped>
 .no-underline {
-  text-decoration: none; /* Remove underline */
+  text-decoration: none;
 }
 </style>
 
@@ -39,6 +39,23 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary fw-bold" @click="goToLogin">login</button>
+                        <button type="button" class="btn btn-secondary fw-bold" data-bs-dismiss="modal">close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="failedModal" tabindex="-1" aria-labelledby="failedModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="failedModalLabel">failed</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                    </div>
+                    <div class="modal-body">
+                        username already used
+                    </div>
+                    <div class="modal-footer">
                         <button type="button" class="btn btn-secondary fw-bold" data-bs-dismiss="modal">close</button>
                     </div>
                 </div>
@@ -83,6 +100,12 @@ export default {
                     alert("fill all fields");
                 }
             } catch(e) {
+                if (e.response.data.code == 401 && e.response.data.message.toLowerCase() == "username already registered") {
+                    this.registrationData.password = null;
+                    const failedModal = new bootstrap.Modal(document.getElementById("failedModal"));
+                    failedModal.show();
+                }
+
                 console.error("Registration failed. ", e);
             }
         },

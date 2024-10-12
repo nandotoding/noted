@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AccountInfoResponse {
     private String id;
+    private String name;
+    private String username;
     private boolean isActive;
     private boolean isDeleted;
 }

@@ -17,6 +17,7 @@ public class GatewayCorsConfiguration {
         corsConfiguration.addAllowedOrigin(clientUrl);
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addExposedHeader("*");
         corsConfiguration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
