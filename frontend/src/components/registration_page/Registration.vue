@@ -7,7 +7,7 @@
 <template>
     <div class="container">
         <h2 class="mt-5 text-center">create new account</h2>
-        <form @submit.prevent="register">
+        <form @submit.prevent="handleRegistration">
             <div class="mb-3">
                 <label for="name" class="form-label">full name</label>
                 <input type="text" class="form-control" v-model="registrationData.name" required/>
@@ -65,51 +65,25 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { accountApi } from '@/api/accountApi';
 import * as bootstrap from 'bootstrap/dist/js/bootstrap.bundle';
+import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default {
-    data() {
-        return {
-            registrationData: {
-                name: null, 
-                username: null,
-                password: null
-            },
-            successMessage: null
+    setup() {
+        const router = useRouter();
+        const registrationData = reactive({
+            name: null,
+            username: null,
+            password: null
+        });
+
+        const handleRegistration = () => {
+            accountApi.register(registrationData);
         };
-    },
-    methods: {
-        async register() {
-            let data = {
-                name: this.registrationData.name,
-                username: this.registrationData.username,
-                password: this.registrationData.password
-            };
 
-            try {
-                const registrationResponse = await axios.post("http://192.168.5.7:8080/account/registration", data);
-
-                if (registrationResponse.status == 200) {
-                    this.registrationData.name = null;
-                    this.registrationData.username = null;
-                    this.registrationData.password = null;
-                    const modal = new bootstrap.Modal(document.getElementById("successModal"));
-                    modal.show();
-                } else {
-                    alert("fill all fields");
-                }
-            } catch(e) {
-                if (e.response.data.code == 401 && e.response.data.message.toLowerCase() == "username already registered") {
-                    this.registrationData.password = null;
-                    const failedModal = new bootstrap.Modal(document.getElementById("failedModal"));
-                    failedModal.show();
-                }
-
-                console.error("Registration failed. ", e);
-            }
-        },
-        goToLogin() {
+        const goToLogin = () => {
             const modalElement = document.getElementById("successModal");
             const modal = bootstrap.Modal.getInstance(modalElement);
 
@@ -117,8 +91,10 @@ export default {
                 modal.hide();
             }
 
-            this.$router.push("/");
-        }
+            router.push("/");
+        };
+
+        return {accountApi, registrationData, handleRegistration, goToLogin};
     }
 };
 </script>

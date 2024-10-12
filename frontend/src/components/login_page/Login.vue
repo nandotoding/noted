@@ -7,7 +7,7 @@
 <template>
     <div class="container">
         <h2 class="mt-5 text-center">login</h2>
-        <form @submit.prevent="login">
+        <form @submit.prevent="handleLogin">
             <div class="mb-3">
                 <label for="username" class="form-label">username</label>
                 <input type="text" class="form-control" v-model="loginData.username" required/>
@@ -44,46 +44,23 @@
 </template>
 
 <script>
-import axios from "axios";
-import { auth } from "./../../auth/auth";
-import * as bootstrap from 'bootstrap/dist/js/bootstrap.bundle';
+import { reactive } from "vue";
+import { accountApi } from "@/api/accountApi";
+import { useRouter } from "vue-router";
 
 export default {
-    data() {
-        return {
-            loginData: {
-                username: null,
-                password: null
-            }
+    setup() {
+        const router = useRouter();
+        const loginData = reactive({
+            username: null,
+            password: null
+        });
+
+        const handleLogin = () => {
+            accountApi.login(loginData, router);
         }
-    },
-    methods: {
-        async login() {
-            let data = {
-                username: this.loginData.username,
-                password: this.loginData.password
-            }
 
-            try {
-                const loginResponse = await axios.post("http://192.168.5.7:8080/account/login", data);
-
-                if (loginResponse.status == 200) {
-                    const token = loginResponse.headers["authorization"].replace("Bearer ", "");
-                    const accountId = loginResponse.data.data.id;
-                    localStorage.setItem("notedToken", token);
-                    localStorage.setItem("notedAccountId", accountId);
-                    auth.login();
-                    this.$router.push("/dashboard");
-                }
-            } catch(e) {
-                if (e.response.data.code == 401 && e.response.data.message.toLowerCase() == "invalid username or password") {
-                    const invalidUsnPassModal = new bootstrap.Modal(document.getElementById("invalidUsnPassModal"));
-                    invalidUsnPassModal.show();
-                }
-
-                console.error("Login failed. ", e);
-            }
-        }
+        return {accountApi, loginData, handleLogin};
     }
 }
 </script>

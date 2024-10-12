@@ -3,14 +3,14 @@
         <h5 class="text-center">my notes</h5>
         <table class="table mt-3 table-striped border-0">
             <tbody>
-                <tr v-for="note in notesData" :key="note.id" class="align-middle">
+                <tr v-for="note in notesApi.notesList" :key="note.id" class="align-middle">
                     <td class="border-0">
                         <button type="button" class="btn btn-secondary btn-sm" @click="view">view</button>
                     </td>
                     <td class="border-0">{{ note.title }}</td>
                     <td class="border-0">{{ note.note }}</td>
                 </tr>
-                <tr v-if="!notesData.length">
+                <tr v-if="!notesApi.notesList.length">
                     <td colspan="2" class="text-center border-0">
                         <small><em>you haven't written any notes yet</em></small>
                     </td>
@@ -21,14 +21,16 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { notesApi } from '@/api/notesApi';
+import { onMounted } from 'vue';
 
 export default {
-    props: {
-        notesData: {
-            type: Array,
-            required: true,
-        }
+    setup() {
+        onMounted(() => {
+            notesApi.getAll();
+        });
+
+        return {notesApi};
     }
 }
 </script>
