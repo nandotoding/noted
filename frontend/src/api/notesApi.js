@@ -1,5 +1,6 @@
 import axios from "axios";
 import { reactive } from "vue";
+import { accountApi } from "./accountApi";
 
 export const notesApi = reactive({
     notesList: [],
@@ -34,6 +35,25 @@ export const notesApi = reactive({
             }
         } catch(e) {
             console.error("Submit error: ", e);
+        }
+    },
+    async delete(noteData, emitter) {
+        let deleteData = {
+            id: noteData.id,
+            accountId: localStorage.getItem("notedAccountId")
+        };
+        let headers = {headers: {
+            Authorization: "Bearer " + localStorage.getItem("notedToken")
+        }};
+
+        try {
+            const deleteResp = await axios.post("http://192.168.5.7:8080/notes/delete", deleteData, headers);
+
+            if (deleteResp.status == 200) {
+                emitter("noteUpdated");
+            }
+        } catch(e) {
+            console.error("Deleting error. ", e);
         }
     }
 });

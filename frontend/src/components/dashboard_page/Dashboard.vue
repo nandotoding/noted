@@ -2,14 +2,14 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mt-3 mb-5">
             <div class="align-items-center">
-                <h5>hi, {{ accountApi.accountInfo.name }}!</h5>
+                <h5>{{ accountApi.accountInfo.name }}'s notes</h5>
             </div>
             <div @click="handleLogout">
-                <button type="button" class="btn btn-danger">logout</button>
+                <button type="button" class="btn btn-danger btn-sm">logout</button>
             </div>
         </div>
         <Write @noteSubmitted="notesApi.getAll()"/>
-         <NotesList/>
+         <NotesList @noteUpdated="notesApi.getAll()"/>
     </div>
 </template>
 

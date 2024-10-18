@@ -1,22 +1,25 @@
 <template>
     <div>
         <h5 class="text-center">my notes</h5>
-        <table class="table mt-3 table-striped border-0">
-            <tbody>
-                <tr v-for="note in notesApi.notesList" :key="note.id" class="align-middle">
-                    <td class="border-0">
-                        <button type="button" class="btn btn-secondary btn-sm" @click="view">view</button>
-                    </td>
-                    <td class="border-0">{{ note.title }}</td>
-                    <td class="border-0">{{ note.note }}</td>
-                </tr>
-                <tr v-if="!notesApi.notesList.length">
-                    <td colspan="2" class="text-center border-0">
-                        <small><em>you haven't written any notes yet</em></small>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div>
+            <div v-for="note in notesApi.notesList" :key="note.id" class="card mt-1 mb-1 p-2">
+                <div class="d-flex justify-content-between align-items-center card-header">
+                    <div>
+                        <h6>{{ note.title }}</h6>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="noteOptionsBtn" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                        <ul class="dropdown-menu" aria-labelledby="noteOptionsBtn">
+                            <li><a class="dropdown-item" href="#" @click.prevent="handleEditNote(note)">edit</a></li>
+                            <li><a class="dropdown-item" href="#" @click.prevent="handleDeleteNote(note)">delete</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>{{ note.note }}</p>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -25,12 +28,16 @@ import { notesApi } from '@/api/notesApi';
 import { onMounted } from 'vue';
 
 export default {
-    setup() {
+    setup(_, {emit}) {
         onMounted(() => {
             notesApi.getAll();
         });
 
-        return {notesApi};
+        const handleDeleteNote = (noteData) => {
+            notesApi.delete(noteData, emit);
+        };
+
+        return {notesApi, handleDeleteNote};
     }
 }
 </script>

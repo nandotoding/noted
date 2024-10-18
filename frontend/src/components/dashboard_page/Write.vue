@@ -7,7 +7,7 @@
         <div class="mb-3">
             <textarea class="form-control" v-model="noteData.note" rows="5" placeholder="write your note here..."></textarea>
         </div>
-        <button class="btn btn-primary" @click="handleSubmitNote">submit</button>
+        <button class="btn btn-primary btn-sm" @click="handleSubmitNote">submit</button>
     </div>
 </template>
 
