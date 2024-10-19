@@ -5,37 +5,39 @@
 </style>
 
 <template>
-    <div class="container">
-        <h2 class="mt-5 text-center">login</h2>
-        <form @submit.prevent="handleLogin">
-            <div class="mb-3">
-                <label for="username" class="form-label">username</label>
-                <input type="text" class="form-control" v-model="loginData.username" required/>
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="container card m-4 bg-dark">
+            <h2 class="mt-4 mb-3 text-center text-white">noted!</h2>
+            <form @submit.prevent="handleLogin">
+                <div class="mb-3">
+                    <label for="username" class="form-label text-white">Username</label>
+                    <input type="text" class="form-control bg-dark text-white" v-model="loginData.username" required/>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label text-white">Password</label>
+                    <input type="password" class="form-control bg-dark text-white" v-model="loginData.password" required/>
+                </div>
+                <button type="submit" class="btn btn-success w-100">Login</button>
+            </form>
+            <div class="mt-3">
+                <p class="text-white">Don't have an account? 
+                    <router-link to="/registration" class="link-primary text-info no-underline">Create new account</router-link>
+                </p>
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">password</label>
-                <input type="password" class="form-control" v-model="loginData.password" required/>
-            </div>
-            <button type="submit" class="btn btn-primary w-100 fw-bold">login</button>
-        </form>
-        <div class="mt-3">
-            <p>don't have an account? 
-                <router-link to="/registration" class="link-primary fw-bold no-underline">create new account</router-link>
-            </p>
-        </div>
 
-        <div class="modal fade" id="invalidUsnPassModal" tabindex="-1" aria-labelledby="invalidUsnPassModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="invalidUsnPassModalLabel">failed</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
-                    </div>
-                    <div class="modal-body">
-                        invalid username or password
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary fw-bold" data-bs-dismiss="modal">close</button>
+            <div class="modal fade" id="invalidUsnPassModal" tabindex="-1" aria-labelledby="invalidUsnPassModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content bg-dark">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-white" id="invalidUsnPassModalLabel">Fail</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                        </div>
+                        <div class="modal-body text-white">
+                            Invalid username or password
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>

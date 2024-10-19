@@ -5,58 +5,60 @@
 </style>
 
 <template>
-    <div class="container">
-        <h2 class="mt-5 text-center">create new account</h2>
-        <form @submit.prevent="handleRegistration">
-            <div class="mb-3">
-                <label for="name" class="form-label">full name</label>
-                <input type="text" class="form-control" v-model="registrationData.name" required/>
-            </div>
-            <div class="mb-3">
-                <label for="username" class="form-label">username</label>
-                <input type="text" class="form-control" v-model="registrationData.username" required/>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">password</label>
-                <input type="password" class="form-control" v-model="registrationData.password" required/>
-            </div>
-            <button type="submit" class="btn btn-primary w-100 fw-bold">create account</button>
-        </form>
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="container card bg-dark m-4">
+            <h2 class="mt-4 mb-3 text-center text-white">noted!</h2>
+            <form @submit.prevent="handleRegistration">
+                <div class="mb-3">
+                    <label for="name" class="form-label text-white">Name</label>
+                    <input type="text" class="form-control bg-dark text-white" v-model="registrationData.name" required/>
+                </div>
+                <div class="mb-3">
+                    <label for="username" class="form-label text-white">Username</label>
+                    <input type="text" class="form-control bg-dark text-white" v-model="registrationData.username" required/>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label text-white">Password</label>
+                    <input type="password" class="form-control bg-dark text-white" v-model="registrationData.password" required/>
+                </div>
+                <button type="submit" class="btn btn-success w-100">Create Account</button>
+            </form>
 
-        <div class="mt-3">
-            <p>have an account? <router-link to="/" class="link-primary fw-bold no-underline">login</router-link></p>
-        </div>
+            <div class="mt-3">
+                <p class="text-white">Have an account? <router-link to="/" class="link-primary text-info no-underline">Login</router-link></p>
+            </div>
 
-        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="successModalLabel">success</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
-                    </div>
-                    <div class="modal-body">
-                        successfully created account!
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary fw-bold" @click="goToLogin">login</button>
-                        <button type="button" class="btn btn-secondary fw-bold" data-bs-dismiss="modal">close</button>
+            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content bg-dark">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-white" id="successModalLabel">Success</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                        </div>
+                        <div class="modal-body text-white">
+                            Successfully created account!
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-success" @click="goToLogin">Login</button>
+                            <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="modal fade" id="failedModal" tabindex="-1" aria-labelledby="failedModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="failedModalLabel">failed</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
-                    </div>
-                    <div class="modal-body">
-                        username already used
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary fw-bold" data-bs-dismiss="modal">close</button>
+            <div class="modal fade" id="failedModal" tabindex="-1" aria-labelledby="failedModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content bg-dark">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-white" id="failedModalLabel">Fail</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                        </div>
+                        <div class="modal-body text-white">
+                            Username already used
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,11 +1,12 @@
 <template>
-    <div class="container">
+    <div class="container mb-5">
         <div class="d-flex justify-content-between align-items-center mt-3 mb-5">
             <div class="align-items-center">
-                <h5>{{ accountApi.accountInfo.name }}'s notes</h5>
+                <h5 class="text-white">{{ accountApi.accountInfo.name }}'s notes</h5>
             </div>
-            <div @click="handleLogout">
-                <button type="button" class="btn btn-danger btn-sm">logout</button>
+            <div @click="handleLogout" style="cursor: pointer;">
+                <button type="button" class="btn btn-outline-light btn-sm">Logout</button>
+
             </div>
         </div>
         <Write @noteSubmitted="notesApi.getAll()"/>
