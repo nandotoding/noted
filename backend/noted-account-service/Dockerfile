@@ -1,7 +1,7 @@
 FROM openjdk:17-jdk-slim
 
 ENV ACC_SERV_PORT=8081
-ENV ACC_SERV_DB_URL=jdbc:postgresql://noted-account-db:5433/noted_account_db
+ENV ACC_SERV_DB_URL=jdbc:postgresql://noted-account-db:5432/noted_account_db
 ENV ACC_SERV_DB_USERNAME=postgres
 ENV ACC_SERV_DB_PASSWORD=password1234
 ENV ACC_SERV_DB_DRIVERCLASSNAME=org.postgresql.Driver

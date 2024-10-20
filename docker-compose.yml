@@ -1,35 +1,39 @@
+version: '2.1'
+
 services:
     noted-gateway-service:
         image: noted-gateway-service-image
         container_name: noted-gateway-service
         build:
-            context: ./noted-gateway-service
+            context: ./backend/noted-gateway-service
         ports:
             - "8080:8080"
         networks:
-            - back-end
+            - noted-internal-network
     noted-account-service:
         image: noted-account-service-image
         container_name: noted-account-service
         build:
-            context: ./noted-account-service
+            context: ./backend/noted-account-service
         depends_on:
-            - noted-account-db
+            noted-account-db:
+                condition: service_healthy
         ports:
             - "8081:8081"
         networks:
-            - back-end
+            - noted-internal-network
     noted-notes-service:
         image: noted-notes-service-image
         container_name: noted-notes-service
         build:
-            context: ./noted-notes-service
+            context: ./backend/noted-notes-service
         depends_on:
-            - noted-notes-db
+            noted-notes-db:
+                condition: service_healthy
         ports:
             - "8082:8082"
         networks:
-            - back-end
+            - noted-internal-network
     noted-account-db:
         image: postgres
         container_name: noted-account-db
@@ -40,9 +44,14 @@ services:
         ports:
             - "5433:5432"
         networks:
-            - back-end
+            - noted-internal-network
         volumes:
             - /var/lib/postgresql/noted/v1/account:/var/lib/postgresql/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            interval: 10s
+            timeout: 10s
+            retries: 10
     noted-notes-db:
         image: postgres
         container_name: noted-notes-db
@@ -53,10 +62,26 @@ services:
         ports:
             - "5434:5432"
         networks:
-            - back-end
+            - noted-internal-network
         volumes:
             - /var/lib/postgresql/noted/v1/notes:/var/lib/postgresql/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            interval: 10s
+            timeout: 10s
+            retries: 10
+    noted-web-service:
+        image: noted-web-service-image
+        container_name: noted-web-service
+        build:
+            context: ./frontend
+        ports:
+            - "9000:80"
+        networks:
+            - noted-internal-network
+        volumes:
+            - ./frontend/dist:/usr/share/nginx/html
             
 networks:
-    back-end:
+    noted-internal-network:
         driver: bridge

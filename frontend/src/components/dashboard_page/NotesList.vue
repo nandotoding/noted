@@ -1,3 +1,9 @@
+<style scoped>
+.dropdown-item:hover {
+    background-color: #333;
+}
+</style>
+
 <template>
     <div class="mt-5 mb-3">
         <div>

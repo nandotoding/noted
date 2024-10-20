@@ -6,10 +6,11 @@ import * as bootstrap from 'bootstrap/dist/js/bootstrap.bundle';
 export const accountApi = reactive({
     accountInfo: {},
     async register(registrationData) {
+        const registrationUrl = import.meta.env.VITE_BACKEND_URL + "/account/registration";
         let data = registrationData;
 
         try {
-            const registrationResponse = await axios.post("http://192.168.5.7:8080/account/registration", data);
+            const registrationResponse = await axios.post(registrationUrl, data);
 
             if (registrationResponse.status == 200) {
                 const modal = new bootstrap.Modal(document.getElementById("successModal"));
@@ -28,10 +29,11 @@ export const accountApi = reactive({
         }
     },
     async login(loginData, router) {
+        const loginUrl = import.meta.env.VITE_BACKEND_URL + "/account/login";
         let data = loginData;
 
         try {
-            const loginResponse = await axios.post("http://192.168.5.7:8080/account/login", data);
+            const loginResponse = await axios.post(loginUrl, data);
 
             if (loginResponse.status == 200) {
                 const token = loginResponse.headers["authorization"].replace("Bearer ", "");
@@ -51,23 +53,25 @@ export const accountApi = reactive({
         }
     },
     async getAccountInfo() {
+        const accInfoUrl = import.meta.env.VITE_BACKEND_URL + "/account/info";
         let data = {id: localStorage.getItem("notedAccountId")};
         let headers = {headers: {
             Authorization: "Bearer " + localStorage.getItem("notedToken")
         }};
 
         try {
-            const response = await axios.post("http://192.168.5.7:8080/account/info", data, headers);
+            const response = await axios.post(accInfoUrl, data, headers);
             this.accountInfo = response.data;
         } catch(e) {
             console.error("Failed fetching account/info. ", e);
         }
     },
     async logout(router) {
+        const logoutUrl = import.meta.env.VITE_BACKEND_URL + "/account/logout";
         let data = {id: localStorage.getItem("notedAccountId")};
         
         try {
-            const logoutResponse = await axios.post("http://192.168.5.7:8080/account/logout", data);
+            const logoutResponse = await axios.post(logoutUrl, data);
 
             if (logoutResponse.status == 200) {
                 localStorage.removeItem("notedToken");

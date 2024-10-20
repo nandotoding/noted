@@ -4,7 +4,7 @@ ENV GAT_SERV_PORT=8080
 ENV JWT_KEY=jwtsecretkey
 ENV ACC_SERV_URL=http://noted-account-service:8081
 ENV NOT_SERV_URL=http://noted-notes-service:8082
-ENV CLIENT_URL=http://localhost:5173
+ENV CLIENT_URL=http://localhost:9000
 
 WORKDIR /app/noted
 
